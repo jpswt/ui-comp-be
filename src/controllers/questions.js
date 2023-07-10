@@ -48,26 +48,31 @@ const deleteQuestion = (req, res) => {
 	});
 };
 
-// const updateQuestion = (req, res) => {
-// 	console.log('/PUT question data updated by id');
-// 	const id = parseInt(req.params.id);
-// 	const { category,qtype,question,author } = req.body;
-// 	pool.query(queries.getStudentByID, [id], (err, results) => {
-// 		const noStudentFound = !results.rows.length;
-// 		if (noStudentFound) {
-// 			res.send('Student does not exist in the database.');
-// 		}
-// 		pool.query(queries.updateStudent, [name, id], (err, results) => {
-// 			if (err) throw err;
-// 			res.status(200).send('The student has been updated');
-// 		});
-// 	});
-// };
+const updateQuestion = (req, res) => {
+	console.log('/PUT question data updated by id');
+	const id = parseInt(req.params.id);
+	const { userID, category, qtype, question, author, createdon } = req.body;
+	const date = new Date();
+	pool.query(queries.getQuestionByID, [id], (err, results) => {
+		const noQuestionFound = !results.rows.length;
+		if (noQuestionFound) {
+			res.send('Question does not exist in the database.');
+		}
+		pool.query(
+			queries.updateQuestion,
+			[userID, category, qtype, question, author, date, id],
+			(err, results) => {
+				if (err) throw err;
+				res.status(200).send('The question has been updated');
+			}
+		);
+	});
+};
 
 module.exports = {
 	getQuestions,
 	getQuestionByID,
 	createQuestion,
 	deleteQuestion,
-	// updateStudent,
+	updateQuestion,
 };
