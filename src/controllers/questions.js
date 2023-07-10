@@ -31,51 +31,43 @@ const createQuestion = (req, res) => {
 			res.status(201).send('Student created successfully');
 		}
 	);
-
-	// if
-
-	// const id = parseInt(req.params.id);
-	// pool.query(queries.getStudentByID, [id], (err, results) => {
-	// 	if (err) throw err;
-	// 	res.status(200).json(results.rows);
-	// });
 };
 
-const deleteStudent = (req, res) => {
-	console.log('/DELETE students by id');
+const deleteQuestion = (req, res) => {
+	console.log('/DELETE question by id');
 	const id = parseInt(req.params.id);
-	pool.query(queries.getStudentByID, [id], (err, results) => {
-		const noStudentFound = !results.rows.length;
-		if (noStudentFound) {
-			res.send('Student does not exist in the database.');
+	pool.query(queries.getQuestionByID, [id], (err, results) => {
+		const noQuestionFound = !results.rows.length;
+		if (noQuestionFound) {
+			res.send('Question does not exist in the database.');
 		}
-		pool.query(queries.deleteStudent, [id], (err, results) => {
+		pool.query(queries.deleteQuestion, [id], (err, results) => {
 			if (err) throw err;
-			res.status(200).send('The student has been deleted');
+			res.status(200).send('The question has been deleted');
 		});
 	});
 };
 
-const updateStudent = (req, res) => {
-	console.log('update student data by id');
-	const id = parseInt(req.params.id);
-	const { name } = req.body;
-	pool.query(queries.getStudentByID, [id], (err, results) => {
-		const noStudentFound = !results.rows.length;
-		if (noStudentFound) {
-			res.send('Student does not exist in the database.');
-		}
-		pool.query(queries.updateStudent, [name, id], (err, results) => {
-			if (err) throw err;
-			res.status(200).send('The student has been updated');
-		});
-	});
-};
+// const updateQuestion = (req, res) => {
+// 	console.log('/PUT question data updated by id');
+// 	const id = parseInt(req.params.id);
+// 	const { category,qtype,question,author } = req.body;
+// 	pool.query(queries.getStudentByID, [id], (err, results) => {
+// 		const noStudentFound = !results.rows.length;
+// 		if (noStudentFound) {
+// 			res.send('Student does not exist in the database.');
+// 		}
+// 		pool.query(queries.updateStudent, [name, id], (err, results) => {
+// 			if (err) throw err;
+// 			res.status(200).send('The student has been updated');
+// 		});
+// 	});
+// };
 
 module.exports = {
 	getQuestions,
 	getQuestionByID,
 	createQuestion,
-	// deleteStudent,
+	deleteQuestion,
 	// updateStudent,
 };
