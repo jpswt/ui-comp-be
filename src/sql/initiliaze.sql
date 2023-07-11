@@ -21,3 +21,8 @@ create table users(
 )
 
 insert into users (username,email,pw_hash)values('','john@gmail.com','letmein')
+
+select u.username, q.category, q.qtype,q.question, q.createdon
+from users u
+join questions q
+on u.id = q.userID

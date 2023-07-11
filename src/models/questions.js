@@ -2,6 +2,9 @@ const getQuestions = 'select * from questions';
 
 const getQuestionByID = 'select * from questions where id = $1';
 
+const getQuestionByUserID =
+	'select u.username, q.category, q.qtype,q.question, q.createdon from users u join questions q on u.id = q.userID where u.id = $1';
+
 const createQuestion =
 	'insert into questions (userID,category,qtype,question,author,createdon) values ($1,$2,$3,$4,$5,$6) ';
 
@@ -13,6 +16,7 @@ const updateQuestion =
 module.exports = {
 	getQuestions,
 	getQuestionByID,
+	getQuestionByUserID,
 	createQuestion,
 	deleteQuestion,
 	updateQuestion,

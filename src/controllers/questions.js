@@ -18,17 +18,31 @@ const getQuestionByID = (req, res) => {
 	});
 };
 
+const getQuestionByUserID = (req, res) => {
+	console.log('/GET question bu userID');
+	let token = req.user_token;
+	let user_id = token.id;
+	const { id } = req.params;
+	id = user_id;
+	pool.query(queries.getQuestionByUserID, [id], (err, results) => {
+		if (err) throw err;
+		res.status(200).json(results.rows);
+	});
+};
+
 const createQuestion = (req, res) => {
 	console.log('/POST new question');
-	const { userID, category, qtype, question, author } = req.body;
+	const { category, qtype, question, author } = req.body;
 	const date = new Date();
+	let token = req.user_token;
+	let user_id = token.id;
 
 	pool.query(
 		queries.createQuestion,
-		[userID, category, qtype, question, author, date],
+		[user_id, category, qtype, question, author, date],
 		(err, results) => {
 			if (err) throw err;
-			res.status(201).send('Student created successfully');
+			res.status(201).send('Question created successfully');
 		}
 	);
 };
@@ -72,6 +86,7 @@ const updateQuestion = (req, res) => {
 module.exports = {
 	getQuestions,
 	getQuestionByID,
+	getQuestionByUserID,
 	createQuestion,
 	deleteQuestion,
 	updateQuestion,
